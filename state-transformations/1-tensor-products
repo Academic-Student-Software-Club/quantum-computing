@@ -8,7 +8,7 @@ import numpy as np
 
 zero= Statevector.from_label('0')
 one = Statevector.from_label('1')
-
+onezero = Statevector.fromlabel('10')
 psi = (zero-one)^(zero-one)^(zero-one)
 psi_dict=psi.to_dict()
 for basis, amplitude in psi_dict.items():
