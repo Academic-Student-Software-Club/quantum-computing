@@ -1,0 +1,40 @@
+import numpy as np
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Operator, Statevector
+from qiskit.visualization import plot_state_city
+
+UH = (1/np.sqrt(2))*np.array([[1,1],[1,-1]])
+UAC = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,-1]])
+
+
+# - Step 0: Setting up circuit 
+initial_state=Statevector.from_label('001')
+qc = QuantumCircuit(3, name="ABC")
+
+
+# -- Step 1: apply X to qubit C
+
+qc.unitary(Operator(UH), [2], label="H")
+
+
+# -- Step 2: UAC on A,C
+qc.unitary(Operator(UAC),[0,2],label="UAC")
+## ERROR: Qiskit misinterprets the order? i guess?
+
+
+# -- Step 3: X on A, B
+qc.unitary(Operator(UH), [0], label="H")
+qc.unitary(Operator(UH), [1], label="H")
+
+
+# -- Step Final - 1: Evolve
+final_state=np.sqrt(8)*(initial_state.evolve(qc))
+
+print(final_state)
+
+final_state_dict=final_state.to_dict()
+for basis, amplitude in final_state_dict.items():
+    print(f"|{basis}>: {amplitude}")
+
+# -- Step Final: Draw
+qc.draw('mpl')
