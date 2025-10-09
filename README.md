@@ -6,4 +6,4 @@ This will just be a jumble of files of what I've created during my one quarter o
   1.  State Transformations:
       Direct manipulation of qubits through operators such as Tensor Products and Unitary Transformations.
   1. Quantum Circuits: 
-       An attempt to describe qubit state evolution through a series of unitary transformations, and drawing of 'quantum circuits'
+       An attempt to describe qubit state evolution through a series of unitary transformations, and drawing of 'quantum circuits'.
