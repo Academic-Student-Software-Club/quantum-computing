@@ -3,6 +3,15 @@ from qiskit import QuantumCircuit
 from qiskit.quantum_info import Operator, Statevector
 from qiskit.visualization import plot_state_city
 
+#  Two transformations- H and U_ac.
+#  First act on qubit C with H,
+#  Then act on A, C with U_ac,
+#  Finally act on A,B with H.
+#  What will the final state be? 
+
+
+
+
 UH = (1/np.sqrt(2))*np.array([[1,1],[1,-1]])
 UAC = np.array([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,-1]])
 
@@ -31,7 +40,10 @@ qc.unitary(Operator(UH), [1], label="H")
 final_state=np.sqrt(8)*(initial_state.evolve(qc))
 
 print(final_state)
-
+#######################
+# This final state does not match  
+# what we calculated in class.     
+#######################
 final_state_dict=final_state.to_dict()
 for basis, amplitude in final_state_dict.items():
     print(f"|{basis}>: {amplitude}")
