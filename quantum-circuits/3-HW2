@@ -26,6 +26,7 @@ qc.unitary(Operator(U1),[1],label="U1")
 qc.unitary(Operator(U1),[2],label="U1")
 final_state_1=initial_state.evolve(qc)
 final_state_1_dict=final_state_1.to_dict()
+print(" Only U1 acted on")
 for basis, amplitude in final_state_1_dict.items():
     print(f"|{basis}>: {amplitude}")
 
@@ -36,16 +37,17 @@ qc2 = QuantumCircuit(3,name="ABC")
 qc2.unitary(Operator(U1),[0],label="U1")
 qc2.unitary(Operator(U1),[1],label="U1")
 qc2.unitary(Operator(U1),[2],label="U1")
-qc2.unitary(Operator(U2),[1,2],label="U2")
+qc2.unitary(Operator(U2),[0,1],label="U2")
 
 final_state_2=initial_state.evolve(qc2)
 final_state_2_dict=final_state_2.to_dict()
+print(" U2 acted on pair AB")
 for basis, amplitude in final_state_2_dict.items():
     print(f"|{basis}>: {amplitude}")
 
 print("----------")
 
-# Testing two-bit unitary, ordered [2,1]
+# Testing two-bit unitary, ordered [1,2]
 qc3 = QuantumCircuit(3,name="ABC")
 qc3.unitary(Operator(U1),[0],label="U1")
 qc3.unitary(Operator(U1),[1],label="U1")
@@ -54,8 +56,12 @@ qc3.unitary(Operator(U2),[2,1],label="U2")
 
 final_state_3=initial_state.evolve(qc3)
 final_state_3_dict=final_state_3.to_dict()
+print("U2 acted on pair BC")
 for basis, amplitude in final_state_3_dict.items():
     print(f"|{basis}>: {amplitude}")
+
+print(qc2)
+print(qc3)
 
 #############################
 # Circuit 1 is a "control" circuit before U2.
