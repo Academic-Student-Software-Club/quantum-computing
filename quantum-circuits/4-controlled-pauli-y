@@ -2,6 +2,7 @@ import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Operator, Statevector
 from qiskit.visualization import plot_state_city
+import matplotlib.pyplot as plt
 
 Y= np.array([[0,-1j],[1j,0]])
 H=(1/np.sqrt(2))*np.array([[1,1],[1,-1]])
@@ -30,11 +31,22 @@ final_state_dict=final_state.to_dict()
 print("Evolution of |00>")
 for basis, amplitude in final_state_dict.items():
     print(f"|{basis}>: {amplitude}")
-print("-----------------")
-print("Full Unitary transformation ")
-unitary = Operator(qc).data
-print(np.round(unitary,3))
 print("---------------")
 print("drawing of Circuit")
 print(qc)
+
+if (1==2):
+    print("-------------")
+    print("-------------")
+    print("second circuit, isolated CNOT-Y unitary")
+    qc2 = QuantumCircuit(2)
+    qc2.cy(0,1)
+    unitary2 = Operator(qc2).data
+    print(unitary2)
+    print(qc2)
+
+
+
+unitary_physics = Operator(qc.reverse_bits()).data
+print(np.round(unitary_physics, 3))
 
