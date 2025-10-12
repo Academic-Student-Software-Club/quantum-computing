@@ -15,6 +15,12 @@ unitary_reordered = Operator(qc.reverse_bits()).data
 print(np.round(unitary_reordered, 3))
 print("-----------")
 qc.cy(1,0)
+#################################
+# Qiskit is really dumb when it 
+# comes to bit ordering. It looks like
+# the order os backwards, but this matches
+# what you get via manual computation.
+##################################
 print("Second Act")
 unitary_reordered = Operator(qc.reverse_bits()).data
 print(np.round(unitary_reordered, 3))
