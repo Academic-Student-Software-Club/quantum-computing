@@ -57,5 +57,13 @@ print("-------------------")
 # V = e^(i ALPHA) AXBXC
 # Don't I want U = this? V and V dagger are what A,B,C are.
 
+X = np.array([[0,1],[1,0]])
+# AXBXC should return U. THis completes the decomposition.
+U = V@X@V_dagger@X@V
+# This does not return U.
 
+print(np.round(U,4))
+print("-----")
+print(np.round(V@V,2))
 
+# So V@V = U, which is good.
