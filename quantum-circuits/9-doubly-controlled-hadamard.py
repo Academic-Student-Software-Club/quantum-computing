@@ -52,7 +52,10 @@ print(V@V_dagger)
 print(np.round(V@V_dagger))
 
 print("-------------------")
-
+# So, I have my V and V_dagger.
+# According to the problem, i now need to decompose 
+# V = e^(i ALPHA) AXBXC
+# Don't I want U = this? V and V dagger are what A,B,C are.
 
 
 
