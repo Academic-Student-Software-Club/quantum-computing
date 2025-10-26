@@ -36,7 +36,7 @@ P2 = np.array([[1+np.sqrt(2),1],[1-np.sqrt(2),1]])
 D=np.array([[e_val[0],0],[0,e_val[1]]])
 P_inv = np.linalg.inv(P)
 P2_inv = np.linalg.inv(P2)
-print(P2@D@P2_inv)
+"""print(P2@D@P2_inv)"""
 print("----------------")
 
 # Create V and V_dagger.
@@ -45,25 +45,31 @@ print("----------------")
 D2=np.array([[cmath.sqrt(e_val[0]),0],[0,np.round(cmath.sqrt(e_val[1]))]])
 V = P@D2@P_inv
 V_dagger = V.conj().T
-print(V)
-print(V_dagger)
-print("--------------")
-print(V@V_dagger)
-print(np.round(V@V_dagger))
 
-print("-------------------")
+if 1==1:
+    print("V:")
+    print(V)
+    print("V_dagger:")
+    print(V_dagger)
+    print("--------------")
+    print("V@V_dagger:")
+    print(np.round(V@V_dagger))
+    
+    print("-------------------")
 # So, I have my V and V_dagger.
 # According to the problem, i now need to decompose 
 # V = e^(i ALPHA) AXBXC
 # Don't I want U = this? V and V dagger are what A,B,C are.
 
 X = np.array([[0,1],[1,0]])
-# AXBXC should return U. THis completes the decomposition.
+# AXBXC should return H. THis completes the decomposition.
 U = V@X@V_dagger@X@V
-# This does not return U.
-
-print(np.round(U,4))
-print("-----")
+# This does not return H.
+print("AXBXC. This should equal H, but it does not. \n Do I now need to factor in the e^i alpha?")
+print(U)
+print("-----------")
+print("V@V (should equal H)")
 print(np.round(V@V,2))
 
-# So V@V = U, which is good.
+# So, as per the question, I now need to 
+# decompose V into e^{1 alpha} AXBXC
