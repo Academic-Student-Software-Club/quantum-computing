@@ -58,5 +58,18 @@ qc.barrier()
 qc.append(cV,[0,2])
 
 
+# Initial state and Evolution
+initial_states=['000','010','100','110']
+
+for state in initial_states:
+
+    psi_in = Statevector.from_label(state)
+    psi_out = psi_in.evolve(qc)
+    psi_out_dict = psi_out.to_dict()
+    print(" ")
+    print("Evolution of |"+state+">")
+    for basis, amplitude in psi_out_dict.items():
+        print(f"|{basis}>: {amplitude}")
+
 print(qc)
 
