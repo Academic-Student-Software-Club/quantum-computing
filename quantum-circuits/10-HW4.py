@@ -1,5 +1,6 @@
 
 import numpy as np
+np.set_printoptions(suppress=True,formatter={'all': lambda x: "{:.4g}".format(x)})
 from sympy import symbols
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import UnitaryGate
@@ -68,12 +69,15 @@ if 1==1:
     for state in initial_states:
     
         psi_in = Statevector.from_label(state)
+        # I had to reverse the bits here to make it a little
+        # easier to see. Same answer, just with *our* 
+        # notation of qubit order.
         psi_out = psi_in.evolve(qc.reverse_bits())
         psi_out_dict = psi_out.to_dict()
         print(" ")
         print("Evolution of |"+state+">")
         for basis, amplitude in psi_out_dict.items():
-            print(f"|{basis}>: {np.round(amplitude,2)}")
+            print(f"|{basis}>: {amplitude}")
     print(" ")
 
 if 1==1:
@@ -103,14 +107,17 @@ if 1==1:
     print(" ")
 
 print("Unitary V @ X @ V+ @ X @ V :")
-print(np.round(V@X@Vdag@X@V,2))
+print(V@X@Vdag@X@V)
 print("----------")
 print(" ")
 print("Unitary H:")
-print(np.round(H,2))
+print(H)
 print("----------")
 print(" ")
 unitary = Operator(qc.reverse_bits()).data
-print(np.round(unitary,2))
+threshold = 1e-10
+unitary.real[np.abs(unitary.real) < threshold] = 0
+unitary.imag[np.abs(unitary.imag) < threshold] = 0
+print(unitary)
 
 print(qc)
