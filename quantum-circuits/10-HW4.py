@@ -2,6 +2,7 @@
 import numpy as np
 from sympy import symbols
 from qiskit import QuantumCircuit
+from qiskit.circuit.library import UnitaryGate
 from qiskit.quantum_info import Operator, Statevector
 from qiskit.visualization import plot_state_city
 
@@ -30,14 +31,32 @@ Vdag = V.T.conj()
 
 qc = QuantumCircuit(3)
 
+# construct unique cV and cVdag gates
+V_gate = UnitaryGate(V,label="V")
+Vdag_gate = UnitaryGate(Vdag,label="V+")
+cV = V_gate.control(1,label="")
+cVdag = Vdag_gate.control(1,label="")
+
 # Controlled V on bits [1,2]
-qc.unitary(Operator(V),[2],label="V")
+
+qc.append(cV,[1,2])
 qc.barrier()
 # CNOT on [0,1]
 qc.cx(0,1)
 qc.barrier()
 
 # Controlled Vdagger on bits [1,2] 
+
+qc.append(cVdag,[1,2])
+qc.barrier()
+
+# CNOT on [0,1]
+qc.cx(0,1)
+qc.barrier()
+
+# Controlled V on bits [0,2]
+qc.append(cV,[0,2])
+
 
 print(qc)
 
