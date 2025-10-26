@@ -37,6 +37,8 @@ Vdag_gate = UnitaryGate(Vdag,label="V+")
 cV = V_gate.control(1,label="")
 cVdag = Vdag_gate.control(1,label="")
 
+X = np.array([[0,1],[1,0]])
+
 # Controlled V on bits [1,2]
 
 qc.append(cV,[1,2])
@@ -59,17 +61,56 @@ qc.append(cV,[0,2])
 
 
 # Initial state and Evolution
-initial_states=['000','010','100','110']
 
-for state in initial_states:
-
-    psi_in = Statevector.from_label(state)
-    psi_out = psi_in.evolve(qc)
-    psi_out_dict = psi_out.to_dict()
+if 1==1:
+    initial_states=['000','010','100','110','111']
+    
+    for state in initial_states:
+    
+        psi_in = Statevector.from_label(state)
+        psi_out = psi_in.evolve(qc.reverse_bits())
+        psi_out_dict = psi_out.to_dict()
+        print(" ")
+        print("Evolution of |"+state+">")
+        for basis, amplitude in psi_out_dict.items():
+            print(f"|{basis}>: {np.round(amplitude,2)}")
     print(" ")
-    print("Evolution of |"+state+">")
-    for basis, amplitude in psi_out_dict.items():
-        print(f"|{basis}>: {amplitude}")
+
+if 1==1:
+    print("Unitary H:")
+    print(H)
+    print("----------")
+    print(" ")
+    print("Unitary V:")
+    print(V)
+    print("----------")
+    print(" ")
+    print("Unitary V+:")
+    print(Vdag)
+    print("----------")
+    print(" ")
+    print("Unitary V@V+:")
+    print(np.round(V@Vdag,2))
+    print("----------")
+    print(" ")
+    print("Unitary V@V:")
+    print(np.round(V@V,2))
+    print("----------")
+    print(" ")
+    print("Unitary V@V+@V:")
+    print(np.round(V@np.round(Vdag@V,2),2))
+    print("----------")
+    print(" ")
+
+print("Unitary V @ X @ V+ @ X @ V :")
+print(np.round(V@X@Vdag@X@V,2))
+print("----------")
+print(" ")
+print("Unitary H:")
+print(np.round(H,2))
+print("----------")
+print(" ")
+unitary = Operator(qc.reverse_bits()).data
+print(np.round(unitary,2))
 
 print(qc)
-
