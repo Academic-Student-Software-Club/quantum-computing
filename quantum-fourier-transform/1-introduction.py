@@ -9,10 +9,11 @@ from qiskit.quantum_info import Operator, Statevector
 from qiskit.visualization import plot_state_city
 
 ########################
-# I dont actually know how this worked.
-# I copied this example just to try it out,
-# but I need to use my IBM minutes
-# and I dont wanna.
+# This doesn't actually do the quantum fourier transform.
+# this is pretty much just a hodge-podged 
+# classical FT, that produces the same 
+# Unitary that would be created by the QFT.
+# Fake news!
 ########################
 
 initial_states = ["00",'01','10','11']
