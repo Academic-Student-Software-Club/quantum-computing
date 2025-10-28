@@ -12,6 +12,17 @@ import cmath
 
 H = (1/np.sqrt(2))*np.array([[1,1],[1,-1]])
 
+A = np.array([[1,0],[0,1]])
+B = np.array([[1,0],[0,1]])
+C = np.array([[1,0],[0,1]])
+
+A_gate = UnitaryGate(A,label="A")
+B_gate = UnitaryGate(B,label="B")
+C_gate = UnitaryGate(C,label="C")
+Adag_gate = UnitaryGate(A,label="A+")
+Bdag_gate = UnitaryGate(B,label="B+")
+Cdag_gate = UnitaryGate(C,label="C+")
+
 # Gets eigenvalues/vectors of H.
 e_val,e_vec = np.linalg.eig(H)
 
@@ -42,7 +53,12 @@ X = np.array([[0,1],[1,0]])
 
 # Controlled V on bits [1,2]
 
-qc.append(cV,[1,2])
+qc.append(A_gate,[2])
+qc.cx(1,2)
+qc.append(B_gate,[2])
+qc.cx(1,2)
+qc.append(C_gate,[2])
+
 qc.barrier()
 # CNOT on [0,1]
 qc.cx(0,1)
@@ -50,7 +66,11 @@ qc.barrier()
 
 # Controlled Vdagger on bits [1,2] 
 
-qc.append(cVdag,[1,2])
+qc.append(Adag_gate,[2])
+qc.cx(1,2)
+qc.append(Bdag_gate,[2])
+qc.cx(1,2)
+qc.append(Cdag_gate,[2])
 qc.barrier()
 
 # CNOT on [0,1]
@@ -58,7 +78,11 @@ qc.cx(0,1)
 qc.barrier()
 
 # Controlled V on bits [0,2]
-qc.append(cV,[0,2])
+qc.append(A_gate,[2])
+qc.cx(0,2)
+qc.append(B_gate,[2])
+qc.cx(0,2)
+qc.append(C_gate,[2])
 
 
 # Initial state and Evolution
@@ -119,5 +143,15 @@ threshold = 1e-10
 unitary.real[np.abs(unitary.real) < threshold] = 0
 unitary.imag[np.abs(unitary.imag) < threshold] = 0
 print(unitary)
-
+print("")
+print("---------")
+print(V)
+print("V@Vn")
+print(V@V)
+print("------")
+print(Vdag)
+print("-------")
+print(V@Vdag)
 print(qc)
+
+
