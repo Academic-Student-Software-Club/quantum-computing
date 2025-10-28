@@ -2,6 +2,12 @@ from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
 import numpy as np
 
+# THIS IS NOT MY WORK!!!
+# I pulled this from ChatGPT,
+# and tried commenting over it,
+# for my own learning benefit.
+
+
 # This defines a function to perform the Quantum Fourier Transform 
 # on the first n qubits of a circuit.
 def qft(circuit, n):
