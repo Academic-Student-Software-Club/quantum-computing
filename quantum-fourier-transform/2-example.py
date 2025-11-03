@@ -32,10 +32,10 @@ def qft(circuit, n):
     return circuit
 
 # Circuit
-n = 3
+n = 2
 qc = QuantumCircuit(n)
 qc.x(0)
-qc.x(2)
+qc.x(n-1)
 qft(qc, n)
 
 # Get statevector without Aer
