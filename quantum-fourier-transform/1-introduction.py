@@ -1,50 +1,67 @@
-from qiskit import QuantumRegister, ClassicalRegister
-from qiskit import QuantumCircuit
-from qiskit.circuit.library import QFT
 import numpy as np
-np.set_printoptions(suppress=True,formatter={'all': lambda x: "{:.4g}".format(x)})
-from sympy import symbols
+from qiskit import QuantumCircuit
 from qiskit.circuit.library import UnitaryGate
-from qiskit.quantum_info import Operator, Statevector
-from qiskit.visualization import plot_state_city
 
-########################
-# This doesn't actually do the quantum fourier transform.
-# this is pretty much just a hodge-podged 
-# classical FT, that produces the same 
-# Unitary that would be created by the QFT.
-# Fake news!
-########################
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyArrowPatch, Arc
 
-initial_states = ["00",'01','10','11']
-U = np.zeros((len(initial_states),len(initial_states)),dtype=complex)
-n = 0
-m = 0
+R2 = np.array([[1,0],[0,np.e**(2*np.pi*1j/4)]],dtype=complex)
+R2dag = R2.conj().T
+R3 = np.array([[1,0],[0,np.e**(2*np.pi*1j/8)]],dtype=complex)
+R3dag = R3.conj().T
 
-while n < len(initial_states):
-    m=0
-    while m < len(initial_states):
-        U[n,m]= U[n,m]+np.e**(2j * np.pi *n*m/len(initial_states))
-        m = m+1
-    n = n+1
+R2gate = UnitaryGate(R2,label="R2")
+R2daggate = UnitaryGate(R2dag,label="R2+")
 
-threshold = 1e-10
-U.real[np.abs(U.real)<threshold]=0
-U.imag[np.abs(U.imag)<threshold]=0
+R3gate = UnitaryGate(R3,label="R3")
+R3daggate = UnitaryGate(R3dag,label="R3+")
 
-print(U)
+cR2 = R2gate.control(1,label="")
+cR2dag = R2daggate.control(1,label="")
+cR3 = R3gate.control(1,label="")
+cR3dag = R3daggate.control(1,label="")
 
+qc = QuantumCircuit(3)
 
+qc.h(0)
+qc.append(cR2,[1,0])
+qc.append(cR3,[2,0])
 
+qc.h(1)
+qc.append(cR2,[2,1])
 
-if 1==2:
-    for state in initial_states:
-        sv = Statevector.from_label(state)
-        arr = np.array(sv)
-        col = arr.reshape(-1,1)
-        print("col:")
-        print(col)
-        U2 = np.append(U2,col,axis=1)
-    print("total U")
-    U2 = U2[:,1:]
-    print(U2)
+qc.h(2)
+
+qc.swap(0,2)
+qc.barrier()
+
+qc.swap(0,2)
+
+qc.h(2)
+
+qc.append(cR2dag,[2,1])
+qc.h(1)
+
+qc.append(cR3dag,[2,0])
+qc.append(cR2dag,[1,0])
+qc.h(0)
+
+fig = qc.draw(output='mpl', fold=-1)
+ax = fig.axes[0]
+
+fig.set_size_inches(10, 5)
+
+def draw_curly_brace(ax, x_start, x_end, y, text, color='black'):
+    mid = (x_start + x_end) / 2
+    dx = (x_end - x_start) / 4
+    arc1 = Arc((x_start+dx/2, y), width=dx*2, height=0.3, theta1=180, theta2=360, color=color, linewidth=2)
+    arc2 = Arc((mid, y), width=dx, height=0.3, theta1=180, theta2=360, color=color, linewidth=2)
+    arc3 = Arc((x_end-dx/2, y), width=dx*2, height=0.3, theta1=180, theta2=360, color=color, linewidth=2)
+    for arc in [arc1, arc2, arc3]:
+        ax.add_patch(arc)
+    ax.text(mid, y-0.50, text, ha='center', va='top', fontsize=20, color=color)
+
+draw_curly_brace(ax, x_start=0, x_end=5.5, y=-2.4, text='U', color='blue')
+draw_curly_brace(ax, x_start=8, x_end=13.5, y=-2.4, text='U†', color='red')
+
+plt.show()

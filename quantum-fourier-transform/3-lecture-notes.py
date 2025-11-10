@@ -13,5 +13,3 @@ import numpy as np
 n = 3
 i=0
 initial_states= ['000','001','010','011','100','101','110','111']
-while i<n:
-    for state in initial_states:

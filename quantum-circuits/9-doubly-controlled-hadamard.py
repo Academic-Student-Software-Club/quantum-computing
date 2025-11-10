@@ -14,7 +14,7 @@ import cmath
 #that V^2 = H and decompose V as e^iαAXBXC with ABC = I
 
 
-if 1==2:
+if 1==1:
     qc1 = QuantumCircuit(3)
     h_gate = HGate()
     cch_gate = h_gate.control(1)

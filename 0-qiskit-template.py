@@ -43,3 +43,43 @@ for state in initial_states:
 threshold = 1e-10
 unitary.real[np.abs(unitary.real) < threshold] = 0
 unitary.imag[np.abs(unitary.imag) < threshold] = 0
+
+U = Operator(qc)
+# --- MATRIX & DIMENSIONS ---
+print("=== MATRIX & DIMENSIONS ===")
+print("Matrix (U.data):\n", U.data)
+print("Matrix shape (U.shape):", U.shape)
+print("Dimension tuple (U.dim):", U.dim)
+print("Input dims (U.input_dims()):", U.input_dims())
+print("Output dims (U.output_dims()):", U.output_dims())
+print("Number of qubits (U.num_qubits):", U.num_qubits)
+
+# --- OPERATOR PROPERTIES ---
+print("\n=== OPERATOR PROPERTIES ===")
+print("Is unitary (U.is_unitary()):", U.is_unitary())
+print("Is identity (U.is_identity()):", U.is_identity())
+print("Adjoint (U.adjoint().data):\n", U.adjoint().data)
+print("Inverse (U.inverse().data):\n", U.inverse().data)
+
+# --- TRANSFORMATIONS & CONVERSIONS ---
+print("\n=== TRANSFORMATIONS & CONVERSIONS ===")
+print("Matrix from U.to_matrix():\n", U.to_matrix())
+print("Equivalent to itself (U.equiv(U)):", U.equiv(U))
+print("Convert to instruction (U.to_instruction()):", U.to_instruction())
+
+# Compose and tensor examples
+U2 = Operator(QuantumCircuit(1))
+print("\nTensor product (U.tensor(U2)).shape:", U.tensor(U2).shape)
+print("Expanded tensor (U.expand(U2)).shape:", U.expand(U2).shape)
+
+# --- EXTRA USEFUL METHODS ---
+print("\n=== EXTRA USEFUL METHODS ===")
+# You can use NumPy for eigenvalues or powers, etc.
+eigs = np.linalg.eigvals(U.data)
+print("Eigenvalues (np.linalg.eigvals(U.data)):\n", eigs)
+print("U squared (U.power(2)).data:\n", U.power(2).data)
+print("Copy of operator (U.copy()):", U.copy())
+
+# --- SUMMARY ---
+print("\n=== SUMMARY ===")
+print(f"U acts on {U.num_qubits} qubits, has shape {U.shape}, and is unitary:", U.is_unitary())
