@@ -16,6 +16,8 @@
 \renewcommand{\thesubsection}{\thesection.\alph{subsection}}
 \usepackage{gensymb}
 \usepackage{tabularx}
+% chktex 44
+
 
 \newcolumntype{b}{X}
 \newcolumntype{s}{>{\hsize=.25\hsize}X}
@@ -45,8 +47,7 @@ For three qubits, the circuits corresponding to the QFT and QFT$^{-1}$ are:
 \pagebreak
 \\ We can find the 8 $\times$ 8 unitary operator $U$ by directly evaluating it's closed form expression:
 \[U\ket{j}=\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{2\pi i j k/N}\ket{k}\]
-\[
-\begin{array}{c|r r r r r r r r}
+\[\begin{array}{c|rrrrrrrr}
 	\ket{j} & \ket{k_0} &\ket{k_1} &\ket{k_2} &\ket{k_3} &\ket{k_4} &\ket{k_5} &\ket{k_6} &\ket{k_7} \\
 	\hline\hline
 	\ket{0} & 1\ket{0}&1\ket{1}&1\ket{2}&1\ket{3}&1\ket{4}&1\ket{5}&1\ket{6}&1\ket{7}\\
