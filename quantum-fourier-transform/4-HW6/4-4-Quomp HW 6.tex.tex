@@ -1,0 +1,108 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=1.75cm,right=1.75cm,marginparwidth=1.75cm]{geometry}
+\usepackage[english]{babel}
+\usepackage{float}
+\usepackage{blindtext}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{xcolor}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\usepackage{gensymb}
+\usepackage{tabularx}
+
+\newcolumntype{b}{X}
+\newcolumntype{s}{>{\hsize=.25\hsize}X}
+
+
+\title{Q. Comp HW 6}
+\author{Michael Bibbs}
+
+\begin{document}
+	\maketitle
+	\section{Problem 1}
+Consider a Fourier Transform
+\[\ket{j}\rightarrow\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{2\pi i j k/N}\ket{k}\]
+\subsection{}
+It is (practically) given that the Quantum Fourier Transform is unitary, since it can be decomposed into a product of other unitary matrices. Therefore, if we let the unitary representation of the QFT be $U$, then there exists another unitary $U^\dagger$ such that $UU^\dagger=I$.
+\\ So, 
+\[U=\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{2\pi i j k/N}\longrightarrow U^*=\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{-2\pi i j k/N}\longrightarrow \boxed{U^{*T}=U^\dagger=\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{-2\pi i j k/N}}\]
+In the form of the sum, switching the indexes $j$ and $k$ do nothing, as they are multiplied together. This matrix is symmetric precisely due to this product (more importantly, the matrix is square.), so the transpose shouldn't do anything \textit{here} anyways- only taking the conjugate. 
+\\ Since we started from the fact that the QFT is unitary, it should be no surprise that consecutive application of both the QFT and Inverse QFT give the identity operator.
+\subsection{}
+For three qubits, the circuits corresponding to the QFT and QFT$^{-1}$ are:
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{fig2.png}
+	\caption{Quantum circuit with $U=$ QFT, and $U^\dagger=\text{ QFT}^{-1}$}
+\end{figure}
+\pagebreak
+\\ We can find the 8 $\times$ 8 unitary operator $U$ by directly evaluating it's closed form expression:
+\[U\ket{j}=\frac{1}{\sqrt{N}}\sum_{k=0}^{N-1}e^{2\pi i j k/N}\ket{k}\]
+\[
+\begin{array}{c|r r r r r r r r}
+	\ket{j} & \ket{k_0} &\ket{k_1} &\ket{k_2} &\ket{k_3} &\ket{k_4} &\ket{k_5} &\ket{k_6} &\ket{k_7} \\
+	\hline\hline
+	\ket{0} & 1\ket{0}&1\ket{1}&1\ket{2}&1\ket{3}&1\ket{4}&1\ket{5}&1\ket{6}&1\ket{7}\\
+
+	\ket{1} & 1\ket{0}&e^{\frac{2 \pi  i}{8}}&e^{\frac{2 \pi  i 2}{8}}&e^{\frac{2 \pi  i 3}{8}}&e^{\frac{2 \pi  i 4}{8}}&e^{\frac{2 \pi  i 5}{8}}&e^{\frac{2 \pi  i 6}{8}}&e^{\frac{2 \pi  i 7}{8}}\\
+	\ket{2} & 1\ket{0}&e^{\frac{2 \pi  i 2}{8}}&e^{\frac{2}{8} \pi  i 2\ 2}&e^{\frac{2}{8} \pi  i 2\ 3}&e^{\frac{2}{8} \pi  i 2\ 4}&e^{\frac{2}{8} \pi  i 2\ 5}&e^{\frac{2}{8} \pi  i 2\ 6}&e^{\frac{2}{8} \pi  i 2\ 7}\\
+	\ket{3} & 1\ket{0}&e^{\frac{2 \pi  i 3}{8}}&e^{\frac{2}{8} \pi  i 3\ 2}&e^{\frac{2}{8} \pi  i 3\ 3}&e^{\frac{2}{8} \pi  i 3\ 4}&e^{\frac{2}{8} \pi  i 3\ 5}&e^{\frac{2}{8} \pi  i 3\ 6}&e^{\frac{2}{8} \pi  i 3\ 7}\\
+	\ket{4} &1\ket{0}&e^{\frac{2 \pi  i 4}{8}}&e^{\frac{2}{8} \pi  i 4\ 2}&e^{\frac{2}{8} \pi  i 4\ 3}&e^{\frac{2}{8} \pi  i 4\ 4}&e^{\frac{2}{8} \pi  i 4\ 5}&e^{\frac{2}{8} \pi  i 4\ 6}&e^{\frac{2}{8} \pi  i 4\ 7}\\
+	\ket{5} &1\ket{0}&e^{\frac{2 \pi  i 5}{8}}&e^{\frac{2}{8} \pi  i 5\ 2}&e^{\frac{2}{8} \pi  i 5\ 3}&e^{\frac{2}{8} \pi  i 5\ 4}&e^{\frac{2}{8} \pi  i 5\ 5}&e^{\frac{2}{8} \pi  i 5\ 6}&e^{\frac{2}{8} \pi  i 5\ 7}\\
+	\ket{6} & 1\ket{0}&e^{\frac{2 \pi  i 6}{8}}&e^{\frac{2}{8} \pi  i 6\ 2}&e^{\frac{2}{8} \pi  i 6\ 3}&e^{\frac{2}{8} \pi  i 6\ 4}&e^{\frac{2}{8} \pi  i 6\ 5}&e^{\frac{2}{8} \pi  i 6\ 6}&e^{\frac{2}{8} \pi  i 6\ 7}\\
+	\ket{7} & 1\ket{0}&e^{\frac{2 \pi  i 7}{8}}&e^{\frac{2}{8} \pi  i 7\ 2}&e^{\frac{2}{8} \pi  i 7\ 3}&e^{\frac{2}{8} \pi  i 7\ 4}&e^{\frac{2}{8} \pi  i 7\ 5}&e^{\frac{2}{8} \pi  i 7\ 6}&e^{\frac{2}{8} \pi  i 7\ 7}\\
+\end{array}
+\]
+Writing the QFT as a full 8 $\times$ 8 unitary,
+\[\boxed{U=\dfrac{1}{\sqrt{8}}
+\left(
+\begin{array}{cccccccc}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+	1 & e^{\frac{i \pi }{4}} & i & e^{\frac{3 i \pi }{4}} & -1 & e^{-\frac{1}{4} (3 i \pi )} & -i & e^{-\frac{1}{4} (i \pi )} \\
+	1 & i & -1 & -i & 1 & i & -1 & -i \\
+	1 & e^{\frac{3 i \pi }{4}} & -i & e^{\frac{i \pi }{4}} & -1 & e^{-\frac{1}{4} (i \pi )} & i & e^{-\frac{1}{4} (3 i \pi )} \\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1 \\
+	1 & e^{-\frac{1}{4} (3 i \pi )} & i & e^{-\frac{1}{4} (i \pi )} & -1 & e^{\frac{i \pi }{4}} & -i & e^{\frac{3 i \pi }{4}} \\
+	1 & -i & -1 & i & 1 & -i & -1 & i \\
+	1 & e^{-\frac{1}{4} (i \pi )} & -i & e^{-\frac{1}{4} (3 i \pi )} & -1 & e^{\frac{3 i \pi }{4}} & i & e^{\frac{i \pi }{4}} \\
+\end{array}
+\right) }\]
+In this form, we can easily find the QFT$^{-1}$ by taking the conjugate-transpose:
+\[\boxed{U^\dagger=\dfrac{1}{\sqrt{8}}
+\left(
+\begin{array}{cccccccc}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+	1 & e^{-\frac{1}{4} (i \pi )} & -i & e^{-\frac{1}{4} (3 i \pi )} & -1 & e^{\frac{3 i \pi }{4}} & i & e^{\frac{i \pi }{4}} \\
+	1 & -i & -1 & i & 1 & -i & -1 & i \\
+	1 & e^{-\frac{1}{4} (3 i \pi )} & i & e^{-\frac{1}{4} (i \pi )} & -1 & e^{\frac{i \pi }{4}} & -i & e^{\frac{3 i \pi }{4}} \\
+	1 & -1 & 1 & -1 & 1 & -1 & 1 & -1 \\
+	1 & e^{\frac{3 i \pi }{4}} & -i & e^{\frac{i \pi }{4}} & -1 & e^{-\frac{1}{4} (i \pi )} & i & e^{-\frac{1}{4} (3 i \pi )} \\
+	1 & i & -1 & -i & 1 & i & -1 & -i \\
+	1 & e^{\frac{i \pi }{4}} & i & e^{\frac{3 i \pi }{4}} & -1 & e^{-\frac{1}{4} (3 i \pi )} & -i & e^{-\frac{1}{4} (i \pi )} \\
+\end{array}
+\right)}\]
+Although we start with the knowledge the QFT is unitary, we can check this by finding $UU^\dagger$.
+\[UU^\dagger=
+\left(
+\begin{array}{cccccccc}
+	1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+	0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+=I\]
+
+
+\end{document}
