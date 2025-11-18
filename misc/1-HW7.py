@@ -105,17 +105,16 @@ zop_list = []
 for k in range(qubits):
     string="".join("Z"if i==k else "I" for i in range(qubits)  )
     zop_list.append(Pauli(string))
-print(zop_list)
 
-pairs = [(qc,observable) for observable in zop_list]
+pairs = [(qc,zop) for zop in zop_list]
 
 estimator = Estimator()
 job = estimator.run(pairs)
 print("---------")
 result = job.result()
-evs = [pub.data.evs for pub in result]
-for item in evs:
-    print(item)
+ev_list = [pub.data.evs for pub in result]
+for ev in ev_list:
+    print(f"Z{ev_list.index(ev)}: {ev}")
 
 # and now I move to a python notebook to use matplotlib.
 
