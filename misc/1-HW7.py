@@ -23,7 +23,7 @@ import cmath
 import numpy as np
 
 t = 0.4
-M = 4
+M = 8
 qubits = 3*M-2
 
 qc = QuantumCircuit(qubits)
