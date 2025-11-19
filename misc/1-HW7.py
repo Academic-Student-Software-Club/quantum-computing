@@ -1,7 +1,4 @@
 # Fractional Quantum Hall States
-# Example, with M=4 electrons and 3M - 2 qubits.
-# Write code that takes integer M and real number t as input.
-
 import numpy as np
 # Sets the numpy arrays to truncate numbers with many digits down to 4.
 np.set_printoptions(suppress=True,formatter={'all': lambda x: "{:.4g}".format(x)})
@@ -10,22 +7,19 @@ from qiskit import QuantumCircuit
 from qiskit.circuit.library import UnitaryGate
 from qiskit.quantum_info import Operator, Statevector, SparsePauliOp,Pauli
 from qiskit.visualization import plot_state_city
-from qiskit.primitives import EstimatorResult
 from qiskit.primitives import StatevectorEstimator as Estimator
-from qiskit_ibm_runtime import EstimatorV2
 
 from qiskit.circuit.library import HGate
 import cmath
-
-
-
-
 import numpy as np
 
-t = 0.4
-M = 8
-qubits = 3*M-2
+############################
+# -- Initialization     -- #
+############################
 
+t = float(input("input t parameter (real): "))
+M = int(input("input # of electrons M (integer): "))  
+qubits = 3*M - 2
 qc = QuantumCircuit(qubits)
 
 
@@ -92,7 +86,6 @@ stage2a(qc,qubits)
 stage2b(qc,qubits)
 stage2c(qc,qubits)
 
-print(qc)
 print("----------")
 print("")
 
@@ -101,20 +94,20 @@ print("")
 #    ,num_qubits=qubits)
 #print(observable)
 
-zop_list = []
-for k in range(qubits):
-    string="".join("Z"if i==k else "I" for i in range(qubits)  )
-    zop_list.append(Pauli(string))
+sv = Statevector.from_instruction(qc)
+amplitudes = sv.data
+probabilities = np.abs(amplitudes)** 2
+n_states = probabilities.size
+print(n_states)
+indeces = np.arange(n_states,dtype=np.uint64) #standard list of indeces, but large.
+ev_list = []
+for k in range(qubits): # for each qubit, calculate it's corresponding < Z_j > and append to a list.
+    # Pauli string: Z on qubit k, I on all others
+    pauli_str = ['I'] * qubits
+    pauli_str[k] = 'Z'
+    pauli_op = Pauli(''.join(pauli_str)) 
+    # Computes expectation value
+    ev = sv.expectation_value(pauli_op) # calculates the expectation value for the jth qubit
+    ev_list.append(np.real(ev))  # convert to float if complex with zero imaginary part
 
-pairs = [(qc,zop) for zop in zop_list]
-
-estimator = Estimator()
-job = estimator.run(pairs)
-print("---------")
-result = job.result()
-ev_list = [pub.data.evs for pub in result]
-for ev in ev_list:
-    print(f"Z{ev_list.index(ev)}: {ev}")
-
-# and now I move to a python notebook to use matplotlib.
 
