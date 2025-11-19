@@ -14,7 +14,6 @@ M = int(input("input # of electrons M (integer): "))
 qubits = 3*M - 2
 qc = QuantumCircuit(qubits)
 
-
 ############################
 # -- Building the FQH   -- #
 ############################
@@ -102,11 +101,9 @@ stage2b(qc, qubits)
 stage2c(qc, qubits)
 evs = get_Z(qc,qubits)
 
-
 for k, ev in enumerate(evs):
     print(f"Z{k}: {ev:.6f}")
 
-# Here, x is just a scalar (number of qubits), and plots on the x_axis a range from q0 to 'qx'
 plt.figure(figsize=(8, 4))
 plt.plot(range(qubits),evs)
 plt.xticks(range(qubits))

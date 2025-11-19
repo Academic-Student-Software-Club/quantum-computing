@@ -98,7 +98,6 @@ sv = Statevector.from_instruction(qc)
 amplitudes = sv.data
 probabilities = np.abs(amplitudes)** 2
 n_states = probabilities.size
-print(n_states)
 indeces = np.arange(n_states,dtype=np.uint64) #standard list of indeces, but large.
 ev_list = []
 for k in range(qubits): # for each qubit, calculate it's corresponding < Z_j > and append to a list.
