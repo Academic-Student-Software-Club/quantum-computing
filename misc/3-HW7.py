@@ -14,13 +14,14 @@ M = int(input("input # of electrons M (integer): "))
 qubits = 3*M - 2
 qc = QuantumCircuit(qubits)
 
+
 ############################
 # -- Building the FQH   -- #
 ############################
 def stage0(circuit, qubits):
     i = 0
     while i < qubits:
-        circuit.h(i)
+        circuit.x(i)
         i += 3
     return circuit
 
@@ -42,7 +43,7 @@ def stage1(circuit, qubits, lst):
                 circuit.ry(-2 * lst[index], i)
                 index += 1
             else:
-                circuit.cry(-2 * lst[index], i - 3, i)
+                circuit.cry(-2 * lst[index], i - 3, i,ctrl_state=0)
                 index += 1
     return circuit
 
@@ -50,6 +51,7 @@ def stage2a(circuit, qubits):
     for index in range(qubits):
         if index % 3 == 1:
             circuit.cx(index, index + 1)
+    return circuit
 
 def stage2b(circuit, qubits):
     for index in range(1, qubits):
@@ -57,6 +59,7 @@ def stage2b(circuit, qubits):
             circuit.rz(np.pi, index)
         if index % 3 == 0:
             circuit.cx(index - 1, index)
+    return circuit
 
 def stage2c(circuit, qubits):
     for index in range(qubits):
@@ -64,13 +67,14 @@ def stage2c(circuit, qubits):
             circuit.cx(index, index - 1)
         if (index % 3 == 0) and (index != 0):
             circuit.rz(np.pi, index - 1)
+    return circuit
 
 #############################
 # -- Expectation Values  -- #
 #############################
 def get_Z(circuit,qubits):
 # I'm trying to comment out this section as best i can 
-# # so I can attempt to break down what the heck is going on, for my readers/future self.
+# # so I can attempt to break down what is going on, for my readers/future self.
     
     sv = Statevector.from_instruction(circuit)# constructs a statevector from evolution of circuit w/ initial state |0...0>
     ev_list = [] 
@@ -78,7 +82,7 @@ def get_Z(circuit,qubits):
         # Pauli string: Z on qubit k, I on all others
         pauli_str = ['I'] * qubits
         pauli_str[k] = 'Z'
-        pauli_op = Pauli(''.join(pauli_str)) 
+        pauli_op = Pauli(''.join(pauli_str[::-1])) 
         
         # Computes expectation value
         ev = sv.expectation_value(pauli_op) # calculates the expectation value for the jth qubit
@@ -100,11 +104,12 @@ stage2a(qc, qubits)
 stage2b(qc, qubits)
 stage2c(qc, qubits)
 evs = get_Z(qc,qubits)
+qc.draw('mpl')
 
 for k, ev in enumerate(evs):
     print(f"Z{k}: {ev:.6f}")
 
-plt.figure(figsize=(8, 4))
+plt.figure(figsize=(6, 3))
 plt.plot(range(qubits),evs)
 plt.xticks(range(qubits))
 plt.xlabel('qubit index j')
