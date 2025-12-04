@@ -13,3 +13,5 @@ This will just be a jumble of files of what I've created during my one quarter o
       - An attempt to describe qubit state evolution through a series of unitary transformations, and drawing of 'quantum circuits'.
   3. Quantum Fourier Transform:
       - A dedicated folder to explore the execution and applications of the QFT, namely to find periodic structures and extract information from the phases of quantum states.
+  4. Misc
+      - A folder to contain homeworks and examples from the remainder of the quarter, with no central topic. 
